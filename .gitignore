@@ -155,9 +155,11 @@ dmypy.json
 
 # django postgresql
 db-data/
+django-db/
 
 # nginx-proxy-manager db
 data/
+letsencrypt/
 
 # temp credentials for testing
 creds.txt
