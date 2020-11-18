@@ -7,12 +7,43 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/app
+      - ./django-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  web:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./django
+    command: bash -c "python manage.py migrate 
+                      && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./django:/app
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
+  # proxy:
+    # image: 'jc21/nginx-proxy-manager:latest'
+    # ports:
+      # - '80:80'
+      # - '81:81'
+      # - '443:443'
+    # volumes:
+      # - ./config.json:/app/config/production.json
+      # - ./data:/data
+      # - ./letsencrypt:/etc/letsencrypt
+  # proxydb:
+    # image: 'jc21/mariadb-aria:10.4'
+    # environment:
+      # MYSQL_ROOT_PASSWORD: 'npm'
+      # MYSQL_DATABASE: 'npm'
+      # MYSQL_USER: 'npm'
+      # MYSQL_PASSWORD: 'npm'
+    # volumes:
+      # - ./data/mysql:/var/lib/mysql

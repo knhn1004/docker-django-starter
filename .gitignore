@@ -151,3 +151,14 @@ dmypy.json
 .prof
 
 # End of https://www.toptal.com/developers/gitignore/api/django
+
+
+# django postgresql
+django-db/
+
+# nginx-proxy-manager db
+data/
+letsencrypt/
+
+# temp credentials for testing
+creds.txt
