@@ -154,7 +154,6 @@ dmypy.json
 
 
 # django postgresql
-db-data/
 django-db/
 
 # nginx-proxy-manager db

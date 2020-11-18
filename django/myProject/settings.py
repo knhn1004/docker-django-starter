@@ -137,16 +137,6 @@ JET_THEMES = [
         'title': 'Green'
     },
     {
-        'theme': 'light-green',
-        'color': '#2faa60',
-        'title': 'Light Green'
-    },
-    {
-        'theme': 'light-violet',
-        'color': '#a464c4',
-        'title': 'Light Violet'
-    },
-    {
         'theme': 'light-blue',
         'color': '#5EADDE',
         'title': 'Light Blue'
