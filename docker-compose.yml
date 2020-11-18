@@ -9,15 +9,25 @@ services:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - test-django-db:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   web:
-    build: django
-    command: python manage.py runserver 0.0.0.0:8000
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./django
+    command: bash -c "python manage.py migrate 
+                      && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./django:/app
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
   # proxy:
     # image: 'jc21/nginx-proxy-manager:latest'
     # ports:
